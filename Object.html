@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Object 对象</title>
+</head>
+<body>
+    <script>
+        
+        Object.prototype.print = function(item){
+            console.log(item);
+        }
+        
+        let obj = new Object();
+
+        obj.print({name:'xixi'});
+
+        let value_str = new Object('hello');
+        let value_null = new Object(null);
+        let value_undefind = new Object(undefined);
+        let value_arr = new Object([0]);
+        let value_nan = new Object(NaN);
+
+        console.log(value_str);
+        console.log(value_null);
+        console.log(value_undefind);
+        console.log(value_arr);
+        console.log(value_nan);
+
+        var bj = {name:'xiaoxiao',age:18};
+
+        var bjs = new Object(bj);
+
+        console.log(bj===bjs);
+
+        //Object.keys 遍历对象的属性 只返回可枚举属性
+        console.log(Object.keys(bj));
+        //Object.getOwnPropertyNames 遍历对象的属性 返回不可枚举的属性名
+        console.log(Object.getOwnPropertyNames(bj));
+
+        var arrs = ['name','age'];
+        
+        console.log(Object.keys(arrs));
+        console.log(Object.getOwnPropertyNames(arrs));
+
+        console.log(bj.valueOf());
+        bj.valueOf = function(){
+            return ['xiaoxiao',18];
+        }
+        console.log(bj.valueOf());
+
+        console.log(bj.toString());
+
+        bj.toString = function(){
+            return this.name + this.age;
+        }
+
+        bj.__proto__.copy = function(){
+            return JSON.parse(JSON.stringify(this));
+        }
+
+        var jk = bj.copy();
+
+        console.log(jk);
+        console.log(jk===bj);
+
+        console.log(bj.toString());
+
+        //由于实例对象可能会自定义toString方法，
+        //覆盖掉Object.prototype.toString方法，
+        //所以为了得到类型字符串，最好直接使用Object.prototype.toString方法。
+        //通过函数的call方法，可以在任意值上调用这个方法，帮助我们判断这个值的类型。
+
+        console.log(Object.prototype.toString.call(bj));
+        console.log(Object.prototype.toString.call([]));
+        console.log(Object.prototype.toString.call(''));
+        console.log(Object.prototype.toString.call(100));
+
+        //利用这个特性，可以写出一个比typeof运算符更准确的类型判断函数。
+        var type = function (o){
+            var s = Object.prototype.toString.call(o);
+            return s.match(/\[object (.*?)\]/)[1].toLowerCase();
+        };
+
+        //判断对象某个属性值是否存在
+        console.log(bj.hasOwnProperty('name'));
+        console.log(bj.hasOwnProperty('year'));
+
+    </script>
+</body>
+</html>
